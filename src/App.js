@@ -2,19 +2,7 @@ import React from 'react';
 import './App.css';
 import Postlist from './Components/Postlist/Postlist';
 
-// const ConsolidatedList = (postApi, commentsApi, usersApi) => postApi.map(
-//   post => ({
-//     ...post,
-//     user: usersApi.find(user => user.id === post.userId),
-//     comments: commentsApi.filter(comment => comment.postId === post.id),
-//   })
-// );
-
-// const listWithUsersCommentsPosts = ConsolidatedList(posts, comments, users);
-
-const POSTS_API = 'https://jsonplaceholder.typicode.com/posts';
-const USERS_API = 'https://jsonplaceholder.typicode.com/users';
-const COMENTS_API = 'https://jsonplaceholder.typicode.com/comments';
+const BASE_URL = 'https://jsonplaceholder.typicode.com/';
 
 class App extends React.Component {
   state = {
@@ -30,7 +18,11 @@ class App extends React.Component {
       isLoading: true,
     });
 
-    Promise.all([fetch(POSTS_API), fetch(USERS_API), fetch(COMENTS_API)])
+    Promise.all([
+      fetch(`${BASE_URL}posts`),
+      fetch(`${BASE_URL}users`),
+      fetch(`${BASE_URL}comments`),
+    ])
       .then(responses => Promise.all(responses.map(respons => respons.json())))
       .then(([postsDate, usersDate, commentsDate]) => this.setState({
         listWithUsersCommentsPosts: postsDate.map(
